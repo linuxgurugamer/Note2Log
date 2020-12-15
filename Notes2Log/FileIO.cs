@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,24 +15,26 @@ namespace Notes2Log_NS
         string path {  get {  return KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/LogNotes/PluginData/" + NOTES; } }
         internal void LoadSettings()
         {
-            ConfigNode file = ConfigNode.Load(path);
-            Notes2Log.notes.Clear();
-            ConfigNode notesNode = file.GetNode(NODENAME);
-            if (notesNode != null)
+            if (File.Exists(path))
             {
-                var notes = notesNode.GetNodes(NOTE_NODE_NAME);
-                foreach (var n in notes)
+                ConfigNode file = ConfigNode.Load(path);
+                Notes2Log.notes.Clear();
+                ConfigNode notesNode = file.GetNode(NODENAME);
+                if (notesNode != null)
                 {
-                    string title = n.SafeLoad("title", "");
-                    string note = n.SafeLoad("note", "");
-                    if (title != "" && note != "")
+                    var notes = notesNode.GetNodes(NOTE_NODE_NAME);
+                    foreach (var n in notes)
                     {
-                        Notes2Log.notes.Add(title, new Notes2Log.LogNote(title, note));
+                        string title = n.SafeLoad("title", "");
+                        string note = n.SafeLoad("note", "");
+                        if (title != "" && note != "")
+                        {
+                            Notes2Log.notes.Add(title, new Notes2Log.LogNote(title, note));
+                        }
                     }
                 }
             }
         }
-
 
         internal void SaveSettings()
         {
