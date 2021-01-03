@@ -1,5 +1,8 @@
 ﻿ChangeLog
 
+0.0.3
+	Write note to KSP.log as well as Player.log
+
 0.0.2
 	Changed from using Dictionary to List
 	Increased title width

@@ -147,11 +147,15 @@ namespace Notes2Log_NS
 
         public void WriteToLog()
         {
+            KSPLog.print("=====================================================================");
+            KSPLog.print(activeNote.note);
+            KSPLog.print("=====================================================================");
+
             UnityEngine.Debug.Log("=====================================================================");
             UnityEngine.Debug.Log(activeNote.note);
             UnityEngine.Debug.Log("=====================================================================");
-        }
 
+        }
 
     }
 
