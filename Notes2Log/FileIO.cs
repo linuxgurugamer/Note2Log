@@ -29,7 +29,7 @@ namespace Notes2Log_NS
                         string note = n.SafeLoad("note", "");
                         if (title != "" && note != "")
                         {
-                            Notes2Log.notes.Add(title, new Notes2Log.LogNote(title, note));
+                            Notes2Log.notes.Add(new Notes2Log.LogNote(title, note));
                         }
                     }
                 }
@@ -40,7 +40,7 @@ namespace Notes2Log_NS
         {
             ConfigNode file = new ConfigNode("LogNotesFile");
             ConfigNode notesNode = new ConfigNode(NODENAME);
-            foreach (var n in Notes2Log.notes.Values)
+            foreach (var n in Notes2Log.notes)
             {
                 ConfigNode data = new ConfigNode(n.title);
                 data.AddValue("title", n.title);

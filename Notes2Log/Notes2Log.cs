@@ -14,7 +14,7 @@ namespace Notes2Log_NS
     [KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
     public class Notes2Log : MonoBehaviour
     {
-        const float WIDTH = 400;
+        const float WIDTH = 440;
         const float HEIGHT = 200;
         public class LogNote
         {
@@ -33,7 +33,7 @@ namespace Notes2Log_NS
             }
         }
 
-        static internal Dictionary<string, LogNote> notes = new Dictionary<string, LogNote>();
+        static internal List<LogNote> notes = new List<LogNote>();
         LogNote activeNote;
 
         internal const string MODID = "Notes2Log";
@@ -88,77 +88,60 @@ namespace Notes2Log_NS
         Vector2 scrollPosition = new Vector2(0, 0);
         void NotesWindow(int id)
         {
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.EndHorizontal();
-            }
-            {
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.BeginVertical();
-                    GUILayout.Space(10);
-                    GUILayout.EndVertical();
-                }
-                {
-                    GUILayout.BeginVertical(GUILayout.Width(90));
-                    HighLogic.CurrentGame.Parameters.CustomParams<Notes2Log_Settings>().altSkin =
-                        GUILayout.Toggle(HighLogic.CurrentGame.Parameters.CustomParams<Notes2Log_Settings>().altSkin, "Alt.Skin");
-                    //GUILayout.Space(35);
-                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(HEIGHT - 50));
-                    foreach (var n in notes.Values)
-                    {
-                        GUILayout.BeginHorizontal();
-                        if (GUILayout.Button(n.title, GUILayout.Width(80)))
-                            activeNote = n;
-                        GUILayout.EndHorizontal();
-                    }
-                    GUILayout.EndScrollView();
-                    //}
-                    GUILayout.EndVertical();
-                }
-                {
-                    GUILayout.BeginVertical();
-                    {
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Space(10);
-                        GUILayout.EndHorizontal();
-                    }
-                    {
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label("Note:");
-                        activeNote.title = GUILayout.TextField(activeNote.title, GUILayout.Width(200));
-                        GUILayout.EndHorizontal();
-                    }
-                    {
-                        GUILayout.BeginHorizontal();
-                        activeNote.note = GUILayout.TextArea(activeNote.note, GUILayout.Height(HEIGHT - 70), GUILayout.ExpandWidth(true));
-                        GUILayout.EndHorizontal();
-                    }
-                    {
-                        GUILayout.BeginHorizontal();
-                        if (GUILayout.Button("Write to log"))
-                            WriteToLog();
-                        if (GUILayout.Button("Save"))
-                        {
-                            notes.Add(activeNote.title, new LogNote(activeNote.title, activeNote.note));
-                            fileIO.SaveSettings();
-                        }
-                        if (GUILayout.Button("Delete"))
-                        {
-                            if (notes.ContainsKey(activeNote.title))
-                                notes.Remove(activeNote.title);
-                        }
-                        if (GUILayout.Button("Clear"))
-                        {
-                            activeNote.Clear();
-                        }
-                        GUILayout.EndHorizontal();
-                    }
+            GUILayout.BeginHorizontal();
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
+            GUILayout.Space(10);
+            GUILayout.EndVertical();
 
-                    GUILayout.EndVertical();
-                }
+            GUILayout.BeginVertical(GUILayout.Width(130));
+            HighLogic.CurrentGame.Parameters.CustomParams<Notes2Log_Settings>().altSkin =
+                GUILayout.Toggle(HighLogic.CurrentGame.Parameters.CustomParams<Notes2Log_Settings>().altSkin, "Alt.Skin");
+            //GUILayout.Space(35);
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(HEIGHT - 50));
+            foreach (var n in notes)
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button(n.title, GUILayout.Width(120)))
+                    activeNote = n;
                 GUILayout.EndHorizontal();
             }
+            GUILayout.EndScrollView();
+
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Note:");
+            activeNote.title = GUILayout.TextField(activeNote.title, GUILayout.Width(200));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            activeNote.note = GUILayout.TextArea(activeNote.note, GUILayout.Height(HEIGHT - 70), GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Write to log"))
+                WriteToLog();
+            if (GUILayout.Button("Save"))
+            {
+                notes.Add(new LogNote(activeNote.title, activeNote.note));
+                fileIO.SaveSettings();
+            }
+            if (GUILayout.Button("Delete"))
+            {
+                notes.Remove(activeNote);
+                activeNote.Clear();
+            }
+            if (GUILayout.Button("Clear"))
+            {
+                activeNote.Clear();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
             GUI.DragWindow();
         }
 

@@ -1,4 +1,9 @@
 ﻿ChangeLog
 
+0.0.2
+	Changed from using Dictionary to List
+	Increased title width
+	Updated version file with correct info
+
 0.0.1
 	Initial release

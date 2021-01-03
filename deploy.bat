@@ -11,9 +11,13 @@ set H=%KSPDIR%
 set GAMEDIR=Notes2Log
 set GAMEDATA="GameData"
 
+set DP0=r:\dp0\kspdev
 
 copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
+copy /Y "%1\*.pdb" "%GAMEDATA%\%GAMEDIR%\Plugins"
+
 xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
 
+xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%DP0%\GameData\%GAMEDIR%"
 
 rem pause
