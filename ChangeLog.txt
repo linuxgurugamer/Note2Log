@@ -1,5 +1,9 @@
 ﻿ChangeLog
 
+0.0.3.2
+	Added "Notes2Log: " prefix to notes to make it easier to find in log file
+	Added missing title line print to log
+
 0.0.3.1
 	Added AssemblyFileVersion
 	Updated version file for 1.12
